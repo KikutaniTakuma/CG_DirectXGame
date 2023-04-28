@@ -345,6 +345,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 	// FenceのSignalを持つためのイベントを作成する
 	HANDLE fenceEvent = nullptr;
+	fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+	assert(fenceEvent != nullptr);
 
 	// dxcCompilerを初期化
 	IDxcUtils* dxcUtils = nullptr;
@@ -542,8 +544,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			commandList->ResourceBarrier(1, &barrier);
 
 
-
-
 			// コマンドリストを確定させる
 			hr = commandList->Close();
 			assert(SUCCEEDED(hr));
@@ -551,16 +551,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			// GPUにコマンドリストの実行を行わせる
 			ID3D12CommandList* commandLists[] = { commandList };
 			commandQueue->ExecuteCommandLists(1, commandLists);
-
-			// 初期値0でFenceを作る
-			ID3D12Fence* fence = nullptr;
-			uint64_t fenceVal = 0;
-			hr = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
-			assert(SUCCEEDED(hr));
-
-			// FenceのSignalを持つためのイベントを作成する
-			fenceEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
-			assert(fenceEvent != nullptr);
 
 
 			// GPUとOSに画面の交換を行うように通知する
@@ -586,8 +576,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 			hr = commandList->Reset(commandAllocator, nullptr);
 			assert(SUCCEEDED(hr));
 
-			CloseHandle(fenceEvent);
-			fence->Release();
 
 			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
 				TranslateMessage(&msg);
@@ -604,6 +592,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	rootSignature->Release();
 	pixelShaderBlob->Release();
 	vertexShaderBlob->Release();
+	CloseHandle(fenceEvent);
+	fence->Release();
 	rtvDescriptorHeap->Release();
 	swapChianResource[0]->Release();
 	swapChianResource[1]->Release();
