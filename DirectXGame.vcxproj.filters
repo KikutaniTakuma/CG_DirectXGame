@@ -13,14 +13,34 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Mat4x4">
+      <UniqueIdentifier>{b3515ae1-5e52-49d4-8385-6e3a1f99edb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Vector3D">
+      <UniqueIdentifier>{eaf8b752-6032-418a-91e3-bab5fd2c1213}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Mat4x4.cpp">
+      <Filter>Mat4x4</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector3D.cpp">
+      <Filter>Vector3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Object3D.VS.hlsl" />
     <FxCompile Include="Object3D.PS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Mat4x4.h">
+      <Filter>Mat4x4</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3D.h">
+      <Filter>Vector3D</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
