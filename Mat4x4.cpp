@@ -31,12 +31,12 @@ Mat4x4 Mat4x4::operator*(const Mat4x4& mat) const{
 	return tmp;
 }
 
-Mat4x4::Mat4x4(std::array<std::array<float, 4>, 4> num) {
+Mat4x4::Mat4x4(const std::array<std::array<float, 4>, 4>& num) {
 	m = num;
 }
 
 const Mat4x4& Mat4x4::operator=(const Mat4x4& mat) {
-	this->m = mat.m;
+	std::copy(mat.m.begin(), mat.m.end(), m.begin());
 
 	return *this;
 }

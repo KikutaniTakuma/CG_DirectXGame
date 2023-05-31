@@ -24,7 +24,7 @@ public:
 	/// 
 	/// </summary>
 	/// <param name="num"></param>
-	Mat4x4(std::array<std::array<float, 4>, 4> num);
+	Mat4x4(const std::array<std::array<float, 4>, 4>& num);
 
 	/// <summary>
 	/// デストラクタ
