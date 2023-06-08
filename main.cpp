@@ -16,6 +16,7 @@
 #include <array>
 #include <filesystem>
 #include <chrono>
+#include <thread>
 #include <vector>
 
 #pragma comment(lib, "d3d12.lib")
@@ -757,10 +758,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	vertexData[3].position = { -0.5f, -0.5f, 0.5f, 1.0f };
 	vertexData[3].texcord = { 0.0f,1.0f };
 	// 上
-	vertexData[4].position = { 0.0f, 0.5f,  0.0f, 1.0f };
+	vertexData[4].position = { 0.0f, 0.0f,  0.0f, 1.0f };
 	vertexData[4].texcord = { 0.5f,0.0f };
 	// 右下
-	vertexData[5].position = { 0.5f, -0.5f, 0.0f, 1.0f };
+	vertexData[5].position = { 0.5f, -0.5f, -0.5f, 1.0f };
 	vertexData[5].texcord = { 1.0f,1.0f };
 
 
@@ -800,8 +801,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	std::array<BYTE, 0x100> key = { 0 };
 	std::array<BYTE, 0x100> preKey = { 0 };
 
-	std::vector<int64_t> avgFps;
-	std::vector<int64_t> oneSecondsAvgFps;
 	MSG msg{};
 	// ウィンドウのxボタンが押されるまでループ
 	while (msg.message != WM_QUIT){
@@ -862,7 +861,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 		// SRVのDEscriptorTableの先頭の設定。2はrootParamater[2]である。
 		commandList->SetGraphicsRootDescriptorTable(2, textureSrvHandleGPU);
 
-		/*transform.rotate.y += kRotateY;*/
+		transform.rotate.y += kRotateY;
 		cameraMatrix = MakeMatrixAffin({ 1.0f,1.0f,1.0f }, Vector3D(), cameraPos);
 		viewMatrix = MakeMatrixInverse(cameraMatrix);
 		projectionMatrix = MakeMatrixPerspectiveFov(0.45f, static_cast<float>(kClientWidth) / static_cast<float>(kClientHeight), 0.1f, 100.0f);
@@ -930,7 +929,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 		auto end = std::chrono::steady_clock::now();
 
-		oneSecondsAvgFps.push_back(1000000LL / std::chrono::duration_cast<std::chrono::microseconds>(end - start).count());
+		/*if (std::chrono::microseconds(16666) > std::chrono::duration_cast<std::chrono::microseconds>(end-start)) {
+			std::this_thread::sleep_until(start + std::chrono::microseconds(16666));
+		}*/
 	}
 
 
